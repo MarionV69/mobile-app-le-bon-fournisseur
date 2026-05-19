@@ -1,6 +1,15 @@
-import { Text, View } from "react-native";
+import api from "@/api/axiosConfig";
+import { Button, View } from "react-native";
 
 export default function Index() {
+  async function testApi() {
+    try {
+      const res = await api.get("/suppliers");
+      console.log("Succès", res.data);
+    } catch (e) {
+      console.error("Erreur", e);
+    }
+  }
   return (
     <View
       style={{
@@ -9,7 +18,7 @@ export default function Index() {
         alignItems: "center",
       }}
     >
-      <Text>Edit app/index.tsx to edit this screen.</Text>
+      <Button title="Test API" onPress={testApi} />
     </View>
   );
 }
