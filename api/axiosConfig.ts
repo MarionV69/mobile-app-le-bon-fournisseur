@@ -11,7 +11,7 @@ const getToken = async (): Promise<string | null> => {
   return SecureStore.getItemAsync("accessToken");
 };
 
-export const api = axios.create({
+const api = axios.create({
   baseURL: API_URL,
   timeout: 10000,
   headers: {
