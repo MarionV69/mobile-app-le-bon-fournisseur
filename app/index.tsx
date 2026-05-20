@@ -1,14 +1,15 @@
+import { colors, sharedStyles } from "@/constants/theme";
 import { useAuth } from "@/hooks/useAuth";
 import { Redirect } from "expo-router";
-import { ActivityIndicator, StyleSheet, View } from "react-native";
+import { ActivityIndicator, View } from "react-native";
 
 export default function Index() {
   const { user, loading } = useAuth();
 
   if (loading) {
     return (
-      <View style={styles.container}>
-        <ActivityIndicator size="large" />
+      <View style={sharedStyles.centered}>
+        <ActivityIndicator size="large" color={colors.primary} />
       </View>
     );
   }
@@ -19,11 +20,3 @@ export default function Index() {
 
   return <Redirect href="/(app)/suppliers" />;
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-});
