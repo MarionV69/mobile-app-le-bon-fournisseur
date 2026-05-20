@@ -1,24 +1,29 @@
-import api from "@/api/axiosConfig";
-import { Button, View } from "react-native";
+import { useAuth } from "@/hooks/useAuth";
+import { Redirect } from "expo-router";
+import { ActivityIndicator, StyleSheet, View } from "react-native";
 
 export default function Index() {
-  async function testApi() {
-    try {
-      const res = await api.get("/suppliers");
-      console.log("Succès", res.data);
-    } catch (e) {
-      console.error("Erreur", e);
-    }
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return (
+      <View style={styles.container}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
   }
-  return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Button title="Test API" onPress={testApi} />
-    </View>
-  );
+
+  if (!user) return <Redirect href="/(auth)/login" />;
+  if (!user.establishmentId)
+    return <Redirect href="/(auth)/create-establishment" />;
+
+  return <Redirect href="/(app)/suppliers" />;
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});
