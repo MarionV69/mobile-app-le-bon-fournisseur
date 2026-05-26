@@ -1,4 +1,5 @@
-import SupplierCard from "@/components/SupplierCard";
+import SearchBar from "@/components/home/SearchBar";
+import SupplierCard from "@/components/home/SupplierCard";
 import { useFavorites } from "@/hooks/useFavorites";
 import { useSuppliers } from "@/hooks/useSuppliers";
 import { useState } from "react";
@@ -12,6 +13,12 @@ export default function Suppliers() {
 
   return (
     <ScrollView style={styles.main}>
+      <SearchBar 
+        search={search}
+        city={city}
+        onSearchChange={setSearch}
+        onCityChange={setCity}
+      />
       <View>
         {suppliers.map((supplier) => (
             <SupplierCard 
@@ -34,5 +41,4 @@ const styles = StyleSheet.create({
     marginBottom: 96, 
     padding: 24,
   }
-  
 });

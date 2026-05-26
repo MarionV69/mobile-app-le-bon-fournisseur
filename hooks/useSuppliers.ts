@@ -12,7 +12,12 @@ export function useSuppliers(search: string, city: string) {
       try {
         setLoading(true);
         setError(null);
-        const response = await api.get<Supplier[]>("/suppliers");
+        const response = await api.get<Supplier[]>("/suppliers", {
+          params: {
+            ...(search && { search }),
+            ...(city && { city }),
+          },
+        });
         setSuppliers(response.data);
       } catch {
         setError(
