@@ -1,5 +1,6 @@
 import { colors, radius, spacing } from "@/constants/theme";
 import { useAuth } from "@/hooks/useAuth";
+import { UserRole } from "@/types/users.types";
 import {
   isEmailValid,
   isNotEmptyString,
@@ -101,7 +102,7 @@ export default function Register() {
         lastName: formData.lastName,
         email: formData.email,
         password: formData.password,
-        role: "OWNER",
+        role: UserRole.OWNER,
         acceptTerms: formData.acceptTerms,
       });
       router.replace("/(auth)/create-establishment");
