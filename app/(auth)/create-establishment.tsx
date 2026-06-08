@@ -103,7 +103,7 @@ export default function CreateEstablishment() {
         phone: formData.phone || undefined,
       });
       await refreshUser();
-      router.replace("/(auth)/confirmation");
+      router.replace("/confirmation");
     } catch (error) {
       if (isAxiosError(error) && error.response?.status === 409) {
         setErrors({ siret: "Ce SIRET est déjà utilisé." });
