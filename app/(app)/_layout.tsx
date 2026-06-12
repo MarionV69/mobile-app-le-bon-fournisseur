@@ -1,7 +1,7 @@
 import { colors, sharedStyles } from "@/constants/theme";
 import { useAuth } from "@/hooks/useAuth";
-import { Tabs } from "expo-router";
-import { Heart, MessageCircle, Search } from "lucide-react-native";
+import { Redirect, Tabs } from "expo-router";
+import { Heart, MessageCircle, Search, User } from "lucide-react-native";
 import { ActivityIndicator, View } from "react-native";
 
 export default function AppLayout() {
@@ -15,16 +15,15 @@ export default function AppLayout() {
     );
   }
 
-  //   TODO: UNCOMMENT
-  //   if (!user) return <Redirect href="/(auth)/login" />;
-  //   if (!user.establishmentId)
-  //     return <Redirect href="/(auth)/create-establishment" />;
+  if (!user) return <Redirect href="/(auth)/login" />;
+  if (!user.establishmentId)
+    return <Redirect href="/(auth)/create-establishment" />;
 
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: colors.primaryMid,
+        tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: colors.mutedForeground,
         tabBarShowLabel: false,
         tabBarStyle: {
@@ -32,13 +31,13 @@ export default function AppLayout() {
           borderTopColor: "transparent",
           borderTopLeftRadius: 16,
           borderTopRightRadius: 16,
-          position: "absolute", // ← détache la nav du bas
+          position: "absolute",
           left: 0,
           right: 0,
           bottom: 0,
           height: 64,
-          elevation: 8, // ombre Android
-          shadowColor: "#000", // ombre iOS
+          elevation: 8,
+          shadowColor: "#000",
           shadowOffset: { width: 0, height: -2 },
           shadowOpacity: 0.08,
           shadowRadius: 8,
@@ -72,6 +71,15 @@ export default function AppLayout() {
           tabBarAccessibilityLabel: "Messages",
           tabBarIcon: ({ color, size }) => (
             <MessageCircle width={size} height={size} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="profile"
+        options={{
+          tabBarAccessibilityLabel: "Profil",
+          tabBarIcon: ({ color, size }) => (
+            <User width={size} height={size} color={color} />
           ),
         }}
       />
