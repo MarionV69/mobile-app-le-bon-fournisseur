@@ -12,6 +12,7 @@ export function useSuppliers(
   const [error, setError] = useState<null | string>(null);
   const [loading, setLoading] = useState(false);
 
+  console.log("API URL:", process.env.EXPO_PUBLIC_API_URL);
   useEffect(() => {
     async function loadSuppliers() {
       try {

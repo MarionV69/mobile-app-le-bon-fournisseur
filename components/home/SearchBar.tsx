@@ -1,15 +1,21 @@
-import { MapPin, Search } from "lucide-react-native";
-import { StyleSheet, TextInput, View  } from "react-native";
+import { MapPin, Search, SlidersHorizontal } from "lucide-react-native";
+import { StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
 
 type SearchBarProps = {
-  search: string,
-  city: string,
+  search: string;
+  city: string;
   onSearchChange: (value: string) => void;
   onCityChange: (value: string) => void;
+  onFilterOpen: () => void;
 };
 
-export default function SearchBar({ search, city, onSearchChange, onCityChange }: SearchBarProps) {
-
+export default function SearchBar({
+  search,
+  city,
+  onSearchChange,
+  onCityChange,
+  onFilterOpen,
+}: SearchBarProps) {
   return (
     <View style={styles.container}>
       {/* Champ nom */}
@@ -26,14 +32,26 @@ export default function SearchBar({ search, city, onSearchChange, onCityChange }
 
       {/* Champ ville */}
       <View style={styles.inputWrapper}>
-        <MapPin size={16} color="#6b7280" />
-        <TextInput
-          style={styles.input}
-          placeholder="Ville..."
-          placeholderTextColor="#9ca3af"
-          value={city}
-          onChangeText={onCityChange}
-        />
+        <View style={styles.flexWrapperSpaceBetween}>
+          <View style={styles.flexWrapper}>
+            <MapPin size={16} color="#6b7280" />
+            <TextInput
+              style={styles.input}
+              placeholder="Ville..."
+              placeholderTextColor="#9ca3af"
+              value={city}
+              onChangeText={onCityChange}
+            />
+          </View>
+          <View style={styles.flexWrapper}>
+            {/* Divider vertical */}
+            <View style={styles.divider} />
+            {/* Bouton Filtres */}
+            <TouchableOpacity onPress={onFilterOpen}>
+              <SlidersHorizontal size={20} color="#6b7280" />
+            </TouchableOpacity>
+          </View>
+        </View>
       </View>
     </View>
   );
@@ -46,6 +64,7 @@ const styles = StyleSheet.create({
   },
   inputWrapper: {
     flexDirection: "row",
+    flex: 1,
     alignItems: "center",
     backgroundColor: "white",
     borderRadius: 10,
@@ -58,9 +77,24 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 2,
   },
-  input: {
+  flexWrapperSpaceBetween: {
+    flexDirection: "row",
     flex: 1,
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  input: {
     fontSize: 14,
     color: "#111827",
+  },
+  flexWrapper: {
+    flexDirection: "row",
+    gap: 8,
+    alignItems: "center",
+  },
+  divider: {
+    width: 1,
+    height: 20,
+    backgroundColor: "#e5e7eb",
   },
 });

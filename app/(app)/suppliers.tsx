@@ -26,7 +26,7 @@ export default function Suppliers() {
   });
   const { suppliers, error, loading } = useSuppliers(search, city, filters);
   const { favorites, handleFavoriteToggle } = useFavorites();
-  const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   return (
     <ScrollView style={styles.main}>
@@ -36,10 +36,8 @@ export default function Suppliers() {
           city={city}
           onSearchChange={setSearch}
           onCityChange={setCity}
+          onFilterOpen={() => setIsFilterOpen(true)}
         />
-        <TouchableOpacity onPress={() => setIsFilterOpen(true)}>
-          <SlidersHorizontal size={20} color="#6b7280" />
-        </TouchableOpacity>
       </View>
       {loading ? (
         <Text>Chargement en cours...</Text>

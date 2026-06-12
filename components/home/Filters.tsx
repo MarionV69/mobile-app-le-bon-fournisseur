@@ -1,5 +1,6 @@
 import { colors, radius, spacing } from "@/constants/theme";
 import { filtersType } from "@/types/filters.types";
+import { useState } from "react";
 import { Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Switch } from "react-native-paper";
 
