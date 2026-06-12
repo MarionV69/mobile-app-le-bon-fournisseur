@@ -1,16 +1,14 @@
-import Filters from "@/components/home/Filters";
-import SearchBar from "@/components/home/SearchBar";
-import SupplierCard from "@/components/home/SupplierCard";
+import Filters from "@/components/suppliers/Filters";
+import SearchBar from "@/components/suppliers/SearchBar";
+import SupplierCard from "@/components/suppliers/SupplierCard";
 import { useFavorites } from "@/hooks/useFavorites";
 import { useSuppliers } from "@/hooks/useSuppliers";
 import { filtersType } from "@/types/filters.types";
-import { SlidersHorizontal } from "lucide-react-native";
 import { useState } from "react";
 import {
   ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
 } from "react-native";
 

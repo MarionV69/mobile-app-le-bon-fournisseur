@@ -7,6 +7,8 @@ import { ActivityIndicator, View } from "react-native";
 export default function AppLayout() {
   const { user, loading } = useAuth();
 
+  console.log("AppLayout - user:", user, "loading:", loading);
+
   if (loading) {
     return (
       <View style={sharedStyles.centered}>
@@ -19,7 +21,9 @@ export default function AppLayout() {
   if (!user.establishmentId)
     return <Redirect href="/(auth)/create-establishment" />;
 
+
   return (
+    
     <Tabs
       screenOptions={{
         headerShown: false,
@@ -54,6 +58,13 @@ export default function AppLayout() {
           tabBarIcon: ({ color, size }) => (
             <Search width={size} height={size} color={color} />
           ),
+        }}
+      />
+      <Tabs.Screen
+        name="suppliers-details/[id]"
+        options={{
+          href: null,
+          tabBarStyle: { display: "none"},
         }}
       />
       <Tabs.Screen
