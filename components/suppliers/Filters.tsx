@@ -1,7 +1,13 @@
 import { colors, radius, spacing } from "@/constants/theme";
 import { filtersType } from "@/types/filters.types";
-import { useState } from "react";
-import { Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  Modal,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { Switch } from "react-native-paper";
 
 type FilterProps = {
@@ -11,11 +17,21 @@ type FilterProps = {
   onClose: () => void;
 };
 
-export default function Filters({ filters, isOpen, onChange, onClose }: FilterProps) {
+export default function Filters({
+  filters,
+  isOpen,
+  onChange,
+  onClose,
+}: FilterProps) {
   const CATEGORIES = [
-    "Viandes", "Fruits & Légumes", "Poissons & Produits de la mer",
-    "Produits laitiers & oeufs", "Boulangerie / Pâtisserie",
-    "Épicerie sèche", "Produits surgelés", "Boissons",
+    "Viandes",
+    "Fruits & Légumes",
+    "Poissons & Produits de la mer",
+    "Produits laitiers & oeufs",
+    "Boulangerie / Pâtisserie",
+    "Épicerie sèche",
+    "Produits surgelés",
+    "Boissons",
   ];
 
   const LABELS = ["Bio", "Label Rouge", "AOP", "IGP", "HVE", "Origine France"];
@@ -64,11 +80,23 @@ export default function Filters({ filters, isOpen, onChange, onClose }: FilterPr
   }
 
   function handleReset() {
-    onChange({ productCategories: [], labels: [], minRating: 0, priceRange: [], isPremium: false });
+    onChange({
+      productCategories: [],
+      labels: [],
+      minRating: 0,
+      priceRange: [],
+      isPremium: false,
+    });
   }
 
   // Composant Checkbox custom
-  function CustomCheckbox({ checked, onPress }: { checked: boolean; onPress: () => void }) {
+  function CustomCheckbox({
+    checked,
+    onPress,
+  }: {
+    checked: boolean;
+    onPress: () => void;
+  }) {
     return (
       <TouchableOpacity
         style={[styles.checkbox, checked && styles.checkboxChecked]}
@@ -80,7 +108,13 @@ export default function Filters({ filters, isOpen, onChange, onClose }: FilterPr
   }
 
   // Composant Radio custom
-  function CustomRadio({ selected, onPress }: { selected: boolean; onPress: () => void }) {
+  function CustomRadio({
+    selected,
+    onPress,
+  }: {
+    selected: boolean;
+    onPress: () => void;
+  }) {
     return (
       <TouchableOpacity style={styles.radioOuter} onPress={onPress}>
         {selected && <View style={styles.radioInner} />}
@@ -91,7 +125,6 @@ export default function Filters({ filters, isOpen, onChange, onClose }: FilterPr
   return (
     <Modal visible={isOpen} animationType="slide">
       <View style={styles.container}>
-
         {/* Header */}
         <View style={styles.header}>
           <Text style={styles.headerTitle}>Filtres</Text>
@@ -101,7 +134,6 @@ export default function Filters({ filters, isOpen, onChange, onClose }: FilterPr
         </View>
 
         <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-
           {/* Catégories */}
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>CATÉGORIES</Text>
@@ -169,11 +201,15 @@ export default function Filters({ filters, isOpen, onChange, onClose }: FilterPr
               <TouchableOpacity
                 key={rating.label}
                 style={styles.row}
-                onPress={() => onChange({ ...filters, minRating: rating.value })}
+                onPress={() =>
+                  onChange({ ...filters, minRating: rating.value })
+                }
               >
                 <CustomRadio
                   selected={filters.minRating === rating.value}
-                  onPress={() => onChange({ ...filters, minRating: rating.value })}
+                  onPress={() =>
+                    onChange({ ...filters, minRating: rating.value })
+                  }
                 />
                 <Text style={styles.rowLabel}>{rating.label}</Text>
               </TouchableOpacity>
@@ -185,10 +221,14 @@ export default function Filters({ filters, isOpen, onChange, onClose }: FilterPr
           {/* Premium */}
           <View style={styles.section}>
             <View style={styles.row}>
-              <Text style={[styles.rowLabel, { flex: 1 }]}>Premium uniquement</Text>
+              <Text style={[styles.rowLabel, { flex: 1 }]}>
+                Premium uniquement
+              </Text>
               <Switch
                 value={filters.isPremium}
-                onValueChange={(value) => onChange({ ...filters, isPremium: value })}
+                onValueChange={(value) =>
+                  onChange({ ...filters, isPremium: value })
+                }
                 color={colors.primary}
               />
             </View>
@@ -198,7 +238,6 @@ export default function Filters({ filters, isOpen, onChange, onClose }: FilterPr
           <TouchableOpacity onPress={handleReset} style={styles.resetBtn}>
             <Text style={styles.resetBtnText}>Réinitialiser les filtres</Text>
           </TouchableOpacity>
-
         </ScrollView>
 
         {/* Footer */}
@@ -207,7 +246,6 @@ export default function Filters({ filters, isOpen, onChange, onClose }: FilterPr
             <Text style={styles.applyBtnText}>Appliquer les filtres</Text>
           </TouchableOpacity>
         </View>
-
       </View>
     </Modal>
   );

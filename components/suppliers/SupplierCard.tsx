@@ -1,4 +1,5 @@
 import type { Supplier } from "@/types/supplier";
+import { useRouter } from "expo-router";
 import { Heart, MapPin, Star } from "lucide-react-native";
 import { useState } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
@@ -14,6 +15,7 @@ export default function SupplierCard({
   isFavorite,
   onFavoriteToggle,
 }: SupplierCardProps) {
+  const router = useRouter();
   const [isAnimating, setIsAnimating] = useState(false);
 
   function handleFavoritePress() {
@@ -23,7 +25,7 @@ export default function SupplierCard({
   }
 
   return (
-    <TouchableOpacity style={styles.card}>
+    <TouchableOpacity style={styles.card} onPress={() => router.push(`/suppliers-details/${supplier.id}` as any)}>
       {/* Image de couverture */}
       <View style={styles.imageContainer}>
         <Image source={{ uri: supplier.coverPhotoUrl }} style={styles.image} />
