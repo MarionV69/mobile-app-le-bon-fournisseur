@@ -7,8 +7,6 @@ import { ActivityIndicator, View } from "react-native";
 export default function AppLayout() {
   const { user, loading } = useAuth();
 
-  console.log("AppLayout - user:", user, "loading:", loading);
-
   if (loading) {
     return (
       <View style={sharedStyles.centered}>
@@ -21,9 +19,7 @@ export default function AppLayout() {
   if (!user.establishmentId)
     return <Redirect href="/(auth)/create-establishment" />;
 
-
   return (
-    
     <Tabs
       screenOptions={{
         headerShown: false,
@@ -32,19 +28,15 @@ export default function AppLayout() {
         tabBarShowLabel: false,
         tabBarStyle: {
           backgroundColor: colors.background,
-          borderTopColor: "transparent",
+          borderTopColor: colors.border,
           borderTopLeftRadius: 16,
           borderTopRightRadius: 16,
-          position: "absolute",
-          left: 0,
-          right: 0,
-          bottom: 0,
           height: 64,
           elevation: 8,
-          shadowColor: "#000",
-          shadowOffset: { width: 0, height: -2 },
-          shadowOpacity: 0.08,
-          shadowRadius: 8,
+          // shadowColor: "#000",
+          // shadowOffset: { width: 0, height: -2 },
+          // shadowOpacity: 0.08,
+          // shadowRadius: 8,
         },
         tabBarItemStyle: {
           paddingTop: 12,
@@ -64,7 +56,6 @@ export default function AppLayout() {
         name="suppliers-details/[id]"
         options={{
           href: null,
-          tabBarStyle: { display: "none"},
         }}
       />
       <Tabs.Screen
