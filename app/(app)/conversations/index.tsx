@@ -1,9 +1,9 @@
 import { Text, View } from "react-native";
 
-export default function Conversations() {
+export default function ConversationsList() {
   return (
     <View>
-      <Text>Conversations</Text>
+      <Text>Conversations List</Text>
     </View>
   );
 }
