@@ -1,13 +1,16 @@
 import { colors, spacing } from "@/constants/theme";
 import { Slot } from "expo-router";
-import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, View } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 
 export default function AuthLayout() {
   return (
     <View style={styles.container}>
-      <ScrollView
+      <KeyboardAwareScrollView
         contentContainerStyle={styles.scrollContent}
         keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}
+        bottomOffset={140}
       >
         {/* Logo */}
         <View style={styles.logoContainer}>
@@ -21,7 +24,7 @@ export default function AuthLayout() {
 
         {/* Form */}
         <Slot />
-      </ScrollView>
+      </KeyboardAwareScrollView>
     </View>
   );
 }

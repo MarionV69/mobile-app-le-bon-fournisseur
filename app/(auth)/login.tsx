@@ -6,8 +6,6 @@ import { Eye, EyeOff } from "lucide-react-native";
 import { useState } from "react";
 import {
   ActivityIndicator,
-  KeyboardAvoidingView,
-  Platform,
   Pressable,
   StyleSheet,
   Text,
@@ -65,107 +63,103 @@ export default function Login() {
   }
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-    >
-      <View style={styles.container}>
-        <Text style={styles.title}>Connexion</Text>
+    <View style={styles.container}>
+      <Text style={styles.title}>Connexion</Text>
 
-        {errors.general && (
-          <Text style={styles.errorGeneral}>{errors.general}</Text>
-        )}
+      {errors.general && (
+        <Text style={styles.errorGeneral}>{errors.general}</Text>
+      )}
 
-        {/* Email */}
-        <View style={styles.fieldGroup}>
-          <Text style={styles.label}>Adresse e-mail</Text>
+      {/* Email */}
+      <View style={styles.fieldGroup}>
+        <Text style={styles.label}>Adresse e-mail</Text>
+        <TextInput
+          style={[
+            styles.input,
+            focusedField === "email" && styles.inputFocused,
+            !!errors.email && styles.inputError,
+          ]}
+          placeholder="vous@exemple.fr"
+          placeholderTextColor={colors.mutedForeground}
+          value={email}
+          onChangeText={setEmail}
+          onFocus={() => setFocusedField("email")}
+          onBlur={() => setFocusedField(null)}
+          keyboardType="email-address"
+          autoCapitalize="none"
+          autoComplete="email"
+          editable={!isLoading}
+        />
+        {errors.email && <Text style={styles.errorText}>{errors.email}</Text>}
+      </View>
+
+      {/* Password */}
+      <View style={styles.fieldGroup}>
+        <Text style={styles.label}>Mot de passe</Text>
+        <View style={styles.inputWrapper}>
           <TextInput
             style={[
               styles.input,
-              focusedField === "email" && styles.inputFocused,
-              !!errors.email && styles.inputError,
+              styles.inputWithIcon,
+              focusedField === "password" && styles.inputFocused,
+              !!errors.password && styles.inputError,
             ]}
-            placeholder="vous@exemple.fr"
+            placeholder="••••••••••••"
             placeholderTextColor={colors.mutedForeground}
-            value={email}
-            onChangeText={setEmail}
-            onFocus={() => setFocusedField("email")}
+            value={password}
+            onChangeText={setPassword}
+            onFocus={() => setFocusedField("password")}
             onBlur={() => setFocusedField(null)}
-            keyboardType="email-address"
-            autoCapitalize="none"
-            autoComplete="email"
+            secureTextEntry={!showPassword}
+            autoComplete="password"
             editable={!isLoading}
           />
-          {errors.email && <Text style={styles.errorText}>{errors.email}</Text>}
+          <Pressable
+            style={styles.eyeButton}
+            onPress={() => setShowPassword((v) => !v)}
+            accessibilityLabel={
+              showPassword
+                ? "Masquer le mot de passe"
+                : "Afficher le mot de passe"
+            }
+          >
+            {showPassword ? (
+              <EyeOff width={18} height={18} color={colors.mutedForeground} />
+            ) : (
+              <Eye width={18} height={18} color={colors.mutedForeground} />
+            )}
+          </Pressable>
         </View>
-
-        {/* Password */}
-        <View style={styles.fieldGroup}>
-          <Text style={styles.label}>Mot de passe</Text>
-          <View style={styles.inputWrapper}>
-            <TextInput
-              style={[
-                styles.input,
-                styles.inputWithIcon,
-                focusedField === "password" && styles.inputFocused,
-                !!errors.password && styles.inputError,
-              ]}
-              placeholder="••••••••••••"
-              placeholderTextColor={colors.mutedForeground}
-              value={password}
-              onChangeText={setPassword}
-              onFocus={() => setFocusedField("password")}
-              onBlur={() => setFocusedField(null)}
-              secureTextEntry={!showPassword}
-              autoComplete="password"
-              editable={!isLoading}
-            />
-            <Pressable
-              style={styles.eyeButton}
-              onPress={() => setShowPassword((v) => !v)}
-              accessibilityLabel={
-                showPassword
-                  ? "Masquer le mot de passe"
-                  : "Afficher le mot de passe"
-              }
-            >
-              {showPassword ? (
-                <EyeOff width={18} height={18} color={colors.mutedForeground} />
-              ) : (
-                <Eye width={18} height={18} color={colors.mutedForeground} />
-              )}
-            </Pressable>
-          </View>
-          {errors.password && (
-            <Text style={styles.errorText}>{errors.password}</Text>
-          )}
-        </View>
-
-        {/* Submit */}
-        <Pressable
-          style={[styles.button, isLoading && styles.buttonDisabled]}
-          onPress={handleSubmit}
-          disabled={isLoading}
-        >
-          {isLoading ? (
-            <ActivityIndicator color={colors.primaryForeground} />
-          ) : (
-            <Text style={styles.buttonText}>Se connecter</Text>
-          )}
-        </Pressable>
-
-        {/* Register link */}
-        <View style={styles.separatorContainer}>
-          <View style={styles.separatorLine} />
-          <Text style={styles.separatorText}>
-            Nouveau sur le bon fournisseur ?
-          </Text>
-          <View style={styles.separatorLine} />
-        </View>
-        <Pressable onPress={() => router.push("/(auth)/register")}>
-          <Text style={styles.link}>Créer un compte</Text>
-        </Pressable>
+        {errors.password && (
+          <Text style={styles.errorText}>{errors.password}</Text>
+        )}
       </View>
-    </KeyboardAvoidingView>
+
+      {/* Submit */}
+      <Pressable
+        style={[styles.button, isLoading && styles.buttonDisabled]}
+        onPress={handleSubmit}
+        disabled={isLoading}
+      >
+        {isLoading ? (
+          <ActivityIndicator color={colors.primaryForeground} />
+        ) : (
+          <Text style={styles.buttonText}>Se connecter</Text>
+        )}
+      </Pressable>
+
+      {/* Register link */}
+      <View style={styles.separatorContainer}>
+        <View style={styles.separatorLine} />
+        <Text style={styles.separatorText}>
+          Nouveau sur le bon fournisseur ?
+        </Text>
+        <View style={styles.separatorLine} />
+      </View>
+      <Pressable onPress={() => router.push("/(auth)/register")}>
+        <Text style={styles.link}>Créer un compte</Text>
+      </Pressable>
+    </View>
   );
 }
 

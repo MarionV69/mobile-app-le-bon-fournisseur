@@ -1,13 +1,17 @@
 import { colors, sharedStyles } from "@/constants/theme";
+import { UnreadProvider } from "@/context/UnreadProvider";
 import { useAuth } from "@/hooks/useAuth";
+import { usePolling } from "@/hooks/usePolling";
+import { useUnread } from "@/hooks/useUnread";
 import { Redirect, Tabs } from "expo-router";
 import { Heart, MessageCircle, Search, User } from "lucide-react-native";
-import { ActivityIndicator, View } from "react-native";
+import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
 
-export default function AppLayout() {
+function TabsLayout() {
   const { user, loading } = useAuth();
+  const { unreadCount, refreshUnreadCount } = useUnread();
 
-  console.log("AppLayout - user:", user, "loading:", loading);
+  usePolling(refreshUnreadCount, 10_000);
 
   if (loading) {
     return (
@@ -21,9 +25,7 @@ export default function AppLayout() {
   if (!user.establishmentId)
     return <Redirect href="/(auth)/create-establishment" />;
 
-
   return (
-    
     <Tabs
       screenOptions={{
         headerShown: false,
@@ -32,19 +34,11 @@ export default function AppLayout() {
         tabBarShowLabel: false,
         tabBarStyle: {
           backgroundColor: colors.background,
-          borderTopColor: "transparent",
+          borderTopWidth: 1,
+          borderTopColor: colors.border,
           borderTopLeftRadius: 16,
           borderTopRightRadius: 16,
-          position: "absolute",
-          left: 0,
-          right: 0,
-          bottom: 0,
           height: 64,
-          elevation: 8,
-          shadowColor: "#000",
-          shadowOffset: { width: 0, height: -2 },
-          shadowOpacity: 0.08,
-          shadowRadius: 8,
         },
         tabBarItemStyle: {
           paddingTop: 12,
@@ -64,7 +58,6 @@ export default function AppLayout() {
         name="suppliers-details/[id]"
         options={{
           href: null,
-          tabBarStyle: { display: "none"},
         }}
       />
       <Tabs.Screen
@@ -81,7 +74,16 @@ export default function AppLayout() {
         options={{
           tabBarAccessibilityLabel: "Messages",
           tabBarIcon: ({ color, size }) => (
-            <MessageCircle width={size} height={size} color={color} />
+            <View>
+              <MessageCircle width={size} height={size} color={color} />
+              {unreadCount > 0 && (
+                <View style={styles.badge}>
+                  <Text style={styles.badgeText}>
+                    {unreadCount > 9 ? "9+" : unreadCount}
+                  </Text>
+                </View>
+              )}
+            </View>
           ),
         }}
       />
@@ -97,3 +99,31 @@ export default function AppLayout() {
     </Tabs>
   );
 }
+
+export default function AppLayout() {
+  return (
+    <UnreadProvider>
+      <TabsLayout />
+    </UnreadProvider>
+  );
+}
+
+const styles = StyleSheet.create({
+  badge: {
+    position: "absolute",
+    top: -4,
+    right: -8,
+    minWidth: 16,
+    height: 16,
+    borderRadius: 8,
+    backgroundColor: colors.destructive,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: 3,
+  },
+  badgeText: {
+    color: "#ffffff",
+    fontSize: 10,
+    fontWeight: "700",
+  },
+});
