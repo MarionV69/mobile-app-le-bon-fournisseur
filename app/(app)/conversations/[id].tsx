@@ -3,6 +3,7 @@ import MessageBubble from "@/components/conversations/MessageBubble";
 import MessageInput from "@/components/conversations/MessageInput";
 import { colors, sharedStyles, spacing } from "@/constants/theme";
 import useConversationMessages from "@/hooks/useConversationMessages";
+import { useUnread } from "@/hooks/useUnread";
 import type { Conversation } from "@/types/conversations.types";
 import { router, useLocalSearchParams } from "expo-router";
 import { ChevronLeft, MessageSquare, User } from "lucide-react-native";
@@ -21,6 +22,7 @@ import { KeyboardAvoidingView } from "react-native-keyboard-controller";
 export default function ConversationDetail() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const conversationId = Number(id);
+  const { refreshUnreadCount } = useUnread();
 
   const [conversation, setConversation] = useState<Conversation | null>(null);
   const [conversationsLoading, setConversationsLoading] = useState(true);
@@ -46,7 +48,7 @@ export default function ConversationDetail() {
     useConversationMessages(
       conversationId,
       conversation?.unreadCount,
-      fetchConversation,
+      refreshUnreadCount,
       fetchConversation,
     );
 

@@ -2,7 +2,9 @@ import { getConversations } from "@/api/conversations";
 import ConversationItem from "@/components/conversations/ConversationItem";
 import { colors, sharedStyles, spacing } from "@/constants/theme";
 import { usePolling } from "@/hooks/usePolling";
+import { useUnread } from "@/hooks/useUnread";
 import type { Conversation } from "@/types/conversations.types";
+import { useFocusEffect } from "expo-router";
 import { MessageSquare } from "lucide-react-native";
 import { useCallback, useState } from "react";
 import {
@@ -12,11 +14,11 @@ import {
   Text,
   View,
 } from "react-native";
-
 export default function ConversationsList() {
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { refreshUnreadCount } = useUnread();
 
   const fetchConversations = useCallback(async () => {
     try {
@@ -32,6 +34,13 @@ export default function ConversationsList() {
   }, []);
 
   usePolling(fetchConversations, 10_000);
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchConversations();
+      refreshUnreadCount();
+    }, [fetchConversations, refreshUnreadCount]),
+  );
 
   if (loading) {
     return (
