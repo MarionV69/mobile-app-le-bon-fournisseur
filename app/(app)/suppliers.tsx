@@ -5,12 +5,7 @@ import { useFavorites } from "@/hooks/useFavorites";
 import { useSuppliers } from "@/hooks/useSuppliers";
 import { filtersType } from "@/types/filters.types";
 import { useState } from "react";
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 
 export default function Suppliers() {
   const [search, setSearch] = useState<string>("");
@@ -64,8 +59,6 @@ export default function Suppliers() {
 
 const styles = StyleSheet.create({
   main: {
-    marginTop: 48,
-    marginBottom: 96,
     padding: 24,
   },
 });

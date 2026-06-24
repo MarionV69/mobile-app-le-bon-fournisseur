@@ -13,10 +13,7 @@ import { router } from "expo-router";
 import { useState } from "react";
 import {
   ActivityIndicator,
-  KeyboardAvoidingView,
-  Platform,
   Pressable,
-  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -116,172 +113,160 @@ export default function CreateEstablishment() {
   }
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-    >
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={styles.container}>
-          <View style={styles.header}>
-            <Text style={styles.title}>Votre établissement</Text>
-            <Text style={styles.subtitle}>
-              Complétez votre profil pour accéder à la plateforme.
-            </Text>
-          </View>
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.title}>Votre établissement</Text>
+        <Text style={styles.subtitle}>
+          Complétez votre profil pour accéder à la plateforme.
+        </Text>
+      </View>
 
-          {errors.general && (
-            <Text style={styles.errorGeneral}>{errors.general}</Text>
+      {errors.general && (
+        <Text style={styles.errorGeneral}>{errors.general}</Text>
+      )}
+
+      {/* Raison sociale */}
+      <View style={styles.fieldGroup}>
+        <Text style={styles.label}>Raison sociale *</Text>
+        <TextInput
+          style={[
+            styles.input,
+            focusedField === "legalName" && styles.inputFocused,
+            !!errors.legalName && styles.inputError,
+          ]}
+          placeholder="Le Bouchon Lyonnais"
+          placeholderTextColor={colors.mutedForeground}
+          value={formData.legalName}
+          onChangeText={(v) => handleChange("legalName", v)}
+          onFocus={() => setFocusedField("legalName")}
+          onBlur={() => setFocusedField(null)}
+          editable={!isLoading}
+        />
+        {errors.legalName && (
+          <Text style={styles.errorText}>{errors.legalName}</Text>
+        )}
+      </View>
+
+      {/* Adresse */}
+      <View style={styles.fieldGroup}>
+        <Text style={styles.label}>Adresse *</Text>
+        <TextInput
+          style={[
+            styles.input,
+            focusedField === "address" && styles.inputFocused,
+            !!errors.address && styles.inputError,
+          ]}
+          placeholder="12 rue de la République"
+          placeholderTextColor={colors.mutedForeground}
+          value={formData.address}
+          onChangeText={(v) => handleChange("address", v)}
+          onFocus={() => setFocusedField("address")}
+          onBlur={() => setFocusedField(null)}
+          editable={!isLoading}
+        />
+        {errors.address && (
+          <Text style={styles.errorText}>{errors.address}</Text>
+        )}
+      </View>
+
+      {/* Code postal + Ville */}
+      <View style={styles.row}>
+        <View style={styles.smallField}>
+          <Text style={styles.label}>Code postal *</Text>
+          <TextInput
+            style={[
+              styles.input,
+              focusedField === "postalCode" && styles.inputFocused,
+              !!errors.postalCode && styles.inputError,
+            ]}
+            placeholder="69001"
+            placeholderTextColor={colors.mutedForeground}
+            value={formData.postalCode}
+            onChangeText={(v) => handleChange("postalCode", v)}
+            onFocus={() => setFocusedField("postalCode")}
+            onBlur={() => setFocusedField(null)}
+            keyboardType="numeric"
+            editable={!isLoading}
+          />
+          {errors.postalCode && (
+            <Text style={styles.errorText}>{errors.postalCode}</Text>
           )}
-
-          {/* Raison sociale */}
-          <View style={styles.fieldGroup}>
-            <Text style={styles.label}>Raison sociale *</Text>
-            <TextInput
-              style={[
-                styles.input,
-                focusedField === "legalName" && styles.inputFocused,
-                !!errors.legalName && styles.inputError,
-              ]}
-              placeholder="Le Bouchon Lyonnais"
-              placeholderTextColor={colors.mutedForeground}
-              value={formData.legalName}
-              onChangeText={(v) => handleChange("legalName", v)}
-              onFocus={() => setFocusedField("legalName")}
-              onBlur={() => setFocusedField(null)}
-              editable={!isLoading}
-            />
-            {errors.legalName && (
-              <Text style={styles.errorText}>{errors.legalName}</Text>
-            )}
-          </View>
-
-          {/* Adresse */}
-          <View style={styles.fieldGroup}>
-            <Text style={styles.label}>Adresse *</Text>
-            <TextInput
-              style={[
-                styles.input,
-                focusedField === "address" && styles.inputFocused,
-                !!errors.address && styles.inputError,
-              ]}
-              placeholder="12 rue de la République"
-              placeholderTextColor={colors.mutedForeground}
-              value={formData.address}
-              onChangeText={(v) => handleChange("address", v)}
-              onFocus={() => setFocusedField("address")}
-              onBlur={() => setFocusedField(null)}
-              editable={!isLoading}
-            />
-            {errors.address && (
-              <Text style={styles.errorText}>{errors.address}</Text>
-            )}
-          </View>
-
-          {/* Code postal + Ville */}
-          <View style={styles.row}>
-            <View style={styles.smallField}>
-              <Text style={styles.label}>Code postal *</Text>
-              <TextInput
-                style={[
-                  styles.input,
-                  focusedField === "postalCode" && styles.inputFocused,
-                  !!errors.postalCode && styles.inputError,
-                ]}
-                placeholder="69001"
-                placeholderTextColor={colors.mutedForeground}
-                value={formData.postalCode}
-                onChangeText={(v) => handleChange("postalCode", v)}
-                onFocus={() => setFocusedField("postalCode")}
-                onBlur={() => setFocusedField(null)}
-                keyboardType="numeric"
-                editable={!isLoading}
-              />
-              {errors.postalCode && (
-                <Text style={styles.errorText}>{errors.postalCode}</Text>
-              )}
-            </View>
-            <View style={styles.largeField}>
-              <Text style={styles.label}>Ville *</Text>
-              <TextInput
-                style={[
-                  styles.input,
-                  focusedField === "city" && styles.inputFocused,
-                  !!errors.city && styles.inputError,
-                ]}
-                placeholder="Lyon"
-                placeholderTextColor={colors.mutedForeground}
-                value={formData.city}
-                onChangeText={(v) => handleChange("city", v)}
-                onFocus={() => setFocusedField("city")}
-                onBlur={() => setFocusedField(null)}
-                editable={!isLoading}
-              />
-              {errors.city && (
-                <Text style={styles.errorText}>{errors.city}</Text>
-              )}
-            </View>
-          </View>
-
-          {/* SIRET + Téléphone */}
-          <View style={styles.row}>
-            <View style={styles.halfField}>
-              <Text style={styles.label}>SIRET *</Text>
-              <TextInput
-                style={[
-                  styles.input,
-                  focusedField === "siret" && styles.inputFocused,
-                  !!errors.siret && styles.inputError,
-                ]}
-                placeholder="123 456 789 00012"
-                placeholderTextColor={colors.mutedForeground}
-                value={formData.siret}
-                onChangeText={(v) => handleChange("siret", v)}
-                onFocus={() => setFocusedField("siret")}
-                onBlur={() => setFocusedField(null)}
-                keyboardType="numeric"
-                editable={!isLoading}
-              />
-              {errors.siret && (
-                <Text style={styles.errorText}>{errors.siret}</Text>
-              )}
-            </View>
-            <View style={styles.halfField}>
-              <Text style={styles.label}>Téléphone</Text>
-              <TextInput
-                style={[
-                  styles.input,
-                  focusedField === "phone" && styles.inputFocused,
-                  !!errors.phone && styles.inputError,
-                ]}
-                placeholder="06 12 34 56 78"
-                placeholderTextColor={colors.mutedForeground}
-                value={formData.phone}
-                onChangeText={(v) => handleChange("phone", v)}
-                onFocus={() => setFocusedField("phone")}
-                onBlur={() => setFocusedField(null)}
-                keyboardType="phone-pad"
-                editable={!isLoading}
-              />
-              {errors.phone && (
-                <Text style={styles.errorText}>{errors.phone}</Text>
-              )}
-            </View>
-          </View>
-
-          {/* Submit */}
-          <Pressable
-            style={[styles.button, isLoading && styles.buttonDisabled]}
-            onPress={handleSubmit}
-            disabled={isLoading}
-          >
-            {isLoading ? (
-              <ActivityIndicator color={colors.primaryForeground} />
-            ) : (
-              <Text style={styles.buttonText}>Créer mon compte</Text>
-            )}
-          </Pressable>
         </View>
-      </ScrollView>
-    </KeyboardAvoidingView>
+        <View style={styles.largeField}>
+          <Text style={styles.label}>Ville *</Text>
+          <TextInput
+            style={[
+              styles.input,
+              focusedField === "city" && styles.inputFocused,
+              !!errors.city && styles.inputError,
+            ]}
+            placeholder="Lyon"
+            placeholderTextColor={colors.mutedForeground}
+            value={formData.city}
+            onChangeText={(v) => handleChange("city", v)}
+            onFocus={() => setFocusedField("city")}
+            onBlur={() => setFocusedField(null)}
+            editable={!isLoading}
+          />
+          {errors.city && <Text style={styles.errorText}>{errors.city}</Text>}
+        </View>
+      </View>
+
+      {/* SIRET + Téléphone */}
+      <View style={styles.row}>
+        <View style={styles.halfField}>
+          <Text style={styles.label}>SIRET *</Text>
+          <TextInput
+            style={[
+              styles.input,
+              focusedField === "siret" && styles.inputFocused,
+              !!errors.siret && styles.inputError,
+            ]}
+            placeholder="123 456 789 00012"
+            placeholderTextColor={colors.mutedForeground}
+            value={formData.siret}
+            onChangeText={(v) => handleChange("siret", v)}
+            onFocus={() => setFocusedField("siret")}
+            onBlur={() => setFocusedField(null)}
+            keyboardType="numeric"
+            editable={!isLoading}
+          />
+          {errors.siret && <Text style={styles.errorText}>{errors.siret}</Text>}
+        </View>
+        <View style={styles.halfField}>
+          <Text style={styles.label}>Téléphone</Text>
+          <TextInput
+            style={[
+              styles.input,
+              focusedField === "phone" && styles.inputFocused,
+              !!errors.phone && styles.inputError,
+            ]}
+            placeholder="06 12 34 56 78"
+            placeholderTextColor={colors.mutedForeground}
+            value={formData.phone}
+            onChangeText={(v) => handleChange("phone", v)}
+            onFocus={() => setFocusedField("phone")}
+            onBlur={() => setFocusedField(null)}
+            keyboardType="phone-pad"
+            editable={!isLoading}
+          />
+          {errors.phone && <Text style={styles.errorText}>{errors.phone}</Text>}
+        </View>
+      </View>
+
+      {/* Submit */}
+      <Pressable
+        style={[styles.button, isLoading && styles.buttonDisabled]}
+        onPress={handleSubmit}
+        disabled={isLoading}
+      >
+        {isLoading ? (
+          <ActivityIndicator color={colors.primaryForeground} />
+        ) : (
+          <Text style={styles.buttonText}>Créer mon compte</Text>
+        )}
+      </Pressable>
+    </View>
   );
 }
 

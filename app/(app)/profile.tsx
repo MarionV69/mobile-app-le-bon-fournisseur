@@ -38,7 +38,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.lg,
     paddingTop: spacing.xl,
     justifyContent: "space-between",
-    paddingBottom: 70,
   },
   userInfo: {
     gap: spacing.xs,

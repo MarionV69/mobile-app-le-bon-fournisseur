@@ -12,10 +12,7 @@ import { Eye, EyeOff } from "lucide-react-native";
 import { useState } from "react";
 import {
   ActivityIndicator,
-  KeyboardAvoidingView,
-  Platform,
   Pressable,
-  ScrollView,
   StyleSheet,
   Switch,
   Text,
@@ -120,226 +117,208 @@ export default function Register() {
   }
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-    >
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={styles.container}>
-          <Text style={styles.title}>Créez un compte</Text>
+    <View style={styles.container}>
+      <Text style={styles.title}>Créez un compte</Text>
 
-          {errors.general && (
-            <Text style={styles.errorGeneral}>{errors.general}</Text>
+      {errors.general && (
+        <Text style={styles.errorGeneral}>{errors.general}</Text>
+      )}
+
+      {/* Firstname + Lastname */}
+      <View style={styles.row}>
+        <View style={styles.halfField}>
+          <Text style={styles.label}>Prénom</Text>
+          <TextInput
+            style={[
+              styles.input,
+              focusedField === "firstName" && styles.inputFocused,
+              !!errors.firstName && styles.inputError,
+            ]}
+            placeholder="Marie"
+            placeholderTextColor={colors.mutedForeground}
+            value={formData.firstName}
+            onChangeText={(v) => handleChange("firstName", v)}
+            onFocus={() => setFocusedField("firstName")}
+            onBlur={() => setFocusedField(null)}
+            editable={!isLoading}
+          />
+          {errors.firstName && (
+            <Text style={styles.errorText}>{errors.firstName}</Text>
           )}
-
-          {/* Firstname + Lastname */}
-          <View style={styles.row}>
-            <View style={styles.halfField}>
-              <Text style={styles.label}>Prénom</Text>
-              <TextInput
-                style={[
-                  styles.input,
-                  focusedField === "firstName" && styles.inputFocused,
-                  !!errors.firstName && styles.inputError,
-                ]}
-                placeholder="Marie"
-                placeholderTextColor={colors.mutedForeground}
-                value={formData.firstName}
-                onChangeText={(v) => handleChange("firstName", v)}
-                onFocus={() => setFocusedField("firstName")}
-                onBlur={() => setFocusedField(null)}
-                editable={!isLoading}
-              />
-              {errors.firstName && (
-                <Text style={styles.errorText}>{errors.firstName}</Text>
-              )}
-            </View>
-            <View style={styles.halfField}>
-              <Text style={styles.label}>Nom</Text>
-              <TextInput
-                style={[
-                  styles.input,
-                  focusedField === "lastName" && styles.inputFocused,
-                  !!errors.lastName && styles.inputError,
-                ]}
-                placeholder="Dupont"
-                placeholderTextColor={colors.mutedForeground}
-                value={formData.lastName}
-                onChangeText={(v) => handleChange("lastName", v)}
-                onFocus={() => setFocusedField("lastName")}
-                onBlur={() => setFocusedField(null)}
-                editable={!isLoading}
-              />
-              {errors.lastName && (
-                <Text style={styles.errorText}>{errors.lastName}</Text>
-              )}
-            </View>
-          </View>
-
-          {/* Email */}
-          <View style={styles.fieldGroup}>
-            <Text style={styles.label}>Adresse e-mail</Text>
-            <TextInput
-              style={[
-                styles.input,
-                focusedField === "email" && styles.inputFocused,
-                !!errors.email && styles.inputError,
-              ]}
-              placeholder="vous@exemple.fr"
-              placeholderTextColor={colors.mutedForeground}
-              value={formData.email}
-              onChangeText={(v) => handleChange("email", v)}
-              onFocus={() => setFocusedField("email")}
-              onBlur={() => setFocusedField(null)}
-              keyboardType="email-address"
-              autoCapitalize="none"
-              autoComplete="email"
-              editable={!isLoading}
-            />
-            {errors.email && (
-              <Text style={styles.errorText}>{errors.email}</Text>
-            )}
-          </View>
-
-          {/* Password */}
-          <View style={styles.fieldGroup}>
-            <Text style={styles.label}>Mot de passe</Text>
-            <View style={styles.inputWrapper}>
-              <TextInput
-                style={[
-                  styles.input,
-                  styles.inputWithIcon,
-                  focusedField === "password" && styles.inputFocused,
-                  !!errors.password && styles.inputError,
-                ]}
-                placeholder="••••••••••••"
-                placeholderTextColor={colors.mutedForeground}
-                value={formData.password}
-                onChangeText={(v) => handleChange("password", v)}
-                onFocus={() => setFocusedField("password")}
-                onBlur={() => setFocusedField(null)}
-                secureTextEntry={!showPassword}
-                editable={!isLoading}
-              />
-              <Pressable
-                style={styles.eyeButton}
-                onPress={() => setShowPassword((v) => !v)}
-                accessibilityLabel={showPassword ? "Masquer" : "Afficher"}
-              >
-                {showPassword ? (
-                  <EyeOff
-                    width={18}
-                    height={18}
-                    color={colors.mutedForeground}
-                  />
-                ) : (
-                  <Eye width={18} height={18} color={colors.mutedForeground} />
-                )}
-              </Pressable>
-            </View>
-            <Text style={styles.hint}>
-              Minimum 12 caractères dont 1 majuscule, 1 chiffre et 1 caractère
-              spécial
-            </Text>
-            {errors.password && (
-              <Text style={styles.errorText}>{errors.password}</Text>
-            )}
-          </View>
-
-          {/* Confirm Password */}
-          <View style={styles.fieldGroup}>
-            <Text style={styles.label}>Confirmer le mot de passe</Text>
-            <View style={styles.inputWrapper}>
-              <TextInput
-                style={[
-                  styles.input,
-                  styles.inputWithIcon,
-                  focusedField === "confirmPassword" && styles.inputFocused,
-                  !!errors.confirmPassword && styles.inputError,
-                ]}
-                placeholder="••••••••••••"
-                placeholderTextColor={colors.mutedForeground}
-                value={formData.confirmPassword}
-                onChangeText={(v) => handleChange("confirmPassword", v)}
-                onFocus={() => setFocusedField("confirmPassword")}
-                onBlur={() => setFocusedField(null)}
-                secureTextEntry={!showConfirmPassword}
-                editable={!isLoading}
-              />
-              <Pressable
-                style={styles.eyeButton}
-                onPress={() => setShowConfirmPassword((v) => !v)}
-                accessibilityLabel={
-                  showConfirmPassword ? "Masquer" : "Afficher"
-                }
-              >
-                {showConfirmPassword ? (
-                  <EyeOff
-                    width={18}
-                    height={18}
-                    color={colors.mutedForeground}
-                  />
-                ) : (
-                  <Eye width={18} height={18} color={colors.mutedForeground} />
-                )}
-              </Pressable>
-            </View>
-            {errors.confirmPassword && (
-              <Text style={styles.errorText}>{errors.confirmPassword}</Text>
-            )}
-          </View>
-
-          {/* CGU */}
-          <View style={styles.termsRow}>
-            <Switch
-              value={formData.acceptTerms}
-              onValueChange={(v) => {
-                setFormData((prev) => ({ ...prev, acceptTerms: v }));
-                if (errors.acceptTerms)
-                  setErrors((prev) => ({ ...prev, acceptTerms: undefined }));
-              }}
-              trackColor={{
-                false: colors.inputBorder,
-                true: colors.primary,
-              }}
-              thumbColor={colors.background}
-              disabled={isLoading}
-            />
-            <Text style={styles.termsText}>
-              {"J'accepte les "}
-              <Text style={styles.termsLink}>conditions générales</Text>
-              {" et la "}
-              <Text style={styles.termsLink}>politique de confidentialité</Text>
-            </Text>
-          </View>
-          {errors.acceptTerms && (
-            <Text style={styles.errorText}>{errors.acceptTerms}</Text>
+        </View>
+        <View style={styles.halfField}>
+          <Text style={styles.label}>Nom</Text>
+          <TextInput
+            style={[
+              styles.input,
+              focusedField === "lastName" && styles.inputFocused,
+              !!errors.lastName && styles.inputError,
+            ]}
+            placeholder="Dupont"
+            placeholderTextColor={colors.mutedForeground}
+            value={formData.lastName}
+            onChangeText={(v) => handleChange("lastName", v)}
+            onFocus={() => setFocusedField("lastName")}
+            onBlur={() => setFocusedField(null)}
+            editable={!isLoading}
+          />
+          {errors.lastName && (
+            <Text style={styles.errorText}>{errors.lastName}</Text>
           )}
+        </View>
+      </View>
 
-          {/* Submit */}
+      {/* Email */}
+      <View style={styles.fieldGroup}>
+        <Text style={styles.label}>Adresse e-mail</Text>
+        <TextInput
+          style={[
+            styles.input,
+            focusedField === "email" && styles.inputFocused,
+            !!errors.email && styles.inputError,
+          ]}
+          placeholder="vous@exemple.fr"
+          placeholderTextColor={colors.mutedForeground}
+          value={formData.email}
+          onChangeText={(v) => handleChange("email", v)}
+          onFocus={() => setFocusedField("email")}
+          onBlur={() => setFocusedField(null)}
+          keyboardType="email-address"
+          autoCapitalize="none"
+          autoComplete="email"
+          editable={!isLoading}
+        />
+        {errors.email && <Text style={styles.errorText}>{errors.email}</Text>}
+      </View>
+
+      {/* Password */}
+      <View style={styles.fieldGroup}>
+        <Text style={styles.label}>Mot de passe</Text>
+        <View style={styles.inputWrapper}>
+          <TextInput
+            style={[
+              styles.input,
+              styles.inputWithIcon,
+              focusedField === "password" && styles.inputFocused,
+              !!errors.password && styles.inputError,
+            ]}
+            placeholder="••••••••••••"
+            placeholderTextColor={colors.mutedForeground}
+            value={formData.password}
+            onChangeText={(v) => handleChange("password", v)}
+            onFocus={() => setFocusedField("password")}
+            onBlur={() => setFocusedField(null)}
+            secureTextEntry={!showPassword}
+            editable={!isLoading}
+          />
           <Pressable
-            style={[styles.button, isLoading && styles.buttonDisabled]}
-            onPress={handleSubmit}
-            disabled={isLoading}
+            style={styles.eyeButton}
+            onPress={() => setShowPassword((v) => !v)}
+            accessibilityLabel={showPassword ? "Masquer" : "Afficher"}
           >
-            {isLoading ? (
-              <ActivityIndicator color={colors.primaryForeground} />
+            {showPassword ? (
+              <EyeOff width={18} height={18} color={colors.mutedForeground} />
             ) : (
-              <Text style={styles.buttonText}>Continuer</Text>
+              <Eye width={18} height={18} color={colors.mutedForeground} />
             )}
-          </Pressable>
-
-          {/* Login link */}
-          <View style={styles.separatorContainer}>
-            <View style={styles.separatorLine} />
-            <Text style={styles.separatorText}>Déjà membre ?</Text>
-            <View style={styles.separatorLine} />
-          </View>
-          <Pressable onPress={() => router.push("/(auth)/login")}>
-            <Text style={styles.link}>Connexion</Text>
           </Pressable>
         </View>
-      </ScrollView>
-    </KeyboardAvoidingView>
+        <Text style={styles.hint}>
+          Minimum 12 caractères dont 1 majuscule, 1 chiffre et 1 caractère
+          spécial
+        </Text>
+        {errors.password && (
+          <Text style={styles.errorText}>{errors.password}</Text>
+        )}
+      </View>
+
+      {/* Confirm Password */}
+      <View style={styles.fieldGroup}>
+        <Text style={styles.label}>Confirmer le mot de passe</Text>
+        <View style={styles.inputWrapper}>
+          <TextInput
+            style={[
+              styles.input,
+              styles.inputWithIcon,
+              focusedField === "confirmPassword" && styles.inputFocused,
+              !!errors.confirmPassword && styles.inputError,
+            ]}
+            placeholder="••••••••••••"
+            placeholderTextColor={colors.mutedForeground}
+            value={formData.confirmPassword}
+            onChangeText={(v) => handleChange("confirmPassword", v)}
+            onFocus={() => setFocusedField("confirmPassword")}
+            onBlur={() => setFocusedField(null)}
+            secureTextEntry={!showConfirmPassword}
+            editable={!isLoading}
+          />
+          <Pressable
+            style={styles.eyeButton}
+            onPress={() => setShowConfirmPassword((v) => !v)}
+            accessibilityLabel={showConfirmPassword ? "Masquer" : "Afficher"}
+          >
+            {showConfirmPassword ? (
+              <EyeOff width={18} height={18} color={colors.mutedForeground} />
+            ) : (
+              <Eye width={18} height={18} color={colors.mutedForeground} />
+            )}
+          </Pressable>
+        </View>
+        {errors.confirmPassword && (
+          <Text style={styles.errorText}>{errors.confirmPassword}</Text>
+        )}
+      </View>
+
+      {/* CGU */}
+      <View style={styles.termsRow}>
+        <Switch
+          value={formData.acceptTerms}
+          onValueChange={(v) => {
+            setFormData((prev) => ({ ...prev, acceptTerms: v }));
+            if (errors.acceptTerms)
+              setErrors((prev) => ({ ...prev, acceptTerms: undefined }));
+          }}
+          trackColor={{
+            false: colors.inputBorder,
+            true: colors.primary,
+          }}
+          thumbColor={colors.background}
+          disabled={isLoading}
+        />
+        <Text style={styles.termsText}>
+          {"J'accepte les "}
+          <Text style={styles.termsLink}>conditions générales</Text>
+          {" et la "}
+          <Text style={styles.termsLink}>politique de confidentialité</Text>
+        </Text>
+      </View>
+      {errors.acceptTerms && (
+        <Text style={styles.errorText}>{errors.acceptTerms}</Text>
+      )}
+
+      {/* Submit */}
+      <Pressable
+        style={[styles.button, isLoading && styles.buttonDisabled]}
+        onPress={handleSubmit}
+        disabled={isLoading}
+      >
+        {isLoading ? (
+          <ActivityIndicator color={colors.primaryForeground} />
+        ) : (
+          <Text style={styles.buttonText}>Continuer</Text>
+        )}
+      </Pressable>
+
+      {/* Login link */}
+      <View style={styles.separatorContainer}>
+        <View style={styles.separatorLine} />
+        <Text style={styles.separatorText}>Déjà membre ?</Text>
+        <View style={styles.separatorLine} />
+      </View>
+      <Pressable onPress={() => router.push("/(auth)/login")}>
+        <Text style={styles.link}>Connexion</Text>
+      </Pressable>
+    </View>
   );
 }
 
