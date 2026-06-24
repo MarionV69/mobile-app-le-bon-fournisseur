@@ -2,6 +2,7 @@ import type { supplierDetails } from "@/types/supplierDetails.type";
 import { Euro, Heart, MapPin, Star } from "lucide-react-native";
 import { useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import ContactButton from "../conversations/ContactButton";
 
 type SupplierHeaderProps = {
   supplier: supplierDetails;
@@ -49,6 +50,10 @@ export default function SupplierHeader({
             ))}
           </View>
         </View>
+        <View style={styles.flexWrapper}>
+          <ContactButton 
+            supplierId={supplier.id}
+          />
           <TouchableOpacity
             style={styles.favoriteBtn}
             onPress={handleFavoritePress}
@@ -59,6 +64,7 @@ export default function SupplierHeader({
               fill={isFavorite ? "#3e1013" : "transparent"}
             />
           </TouchableOpacity>
+        </View>
       </View>
 
       {/* Ville + prix + note */}
@@ -177,4 +183,8 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     gap: 8,
   },
+  flexWrapper: {
+    flexDirection: "row",
+    gap: 1,
+  }
 });
